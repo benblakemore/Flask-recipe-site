@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="quizzes_list">
+    <h1>Home</h1>
+    <h2>This is the main page in which all recipes are displayed</h2>
+
+    {% for quizname in input['quizzes'] %}
+        <h1><a href="{{ url_for('quiz.view_quiz', quizname=quizname) }}" style="text-decoration:none">-  {{ quizname }}</a></h1>
+    {% endfor %}
+</div>
+{% endblock %}

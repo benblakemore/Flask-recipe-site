@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block header %}<h1>{{ input['quiz_name'] }}</h1>{% endblock %}
+
+{% set edit_permissions = g.user['permissionLevel'] == 'Edit' %}
+{% set view_permissions = g.user['permissionLevel'] == 'View' %}
+
+{% block content %}
+<div class="questions_answers">
+{% if edit_permissions %}
+    <form method="post" action="{{ url_for('quiz.delete_quiz', quiz_name=input['quiz_name']) }}">
+        <input type="submit" name="delete" value="Delete Quiz">
+    </form>
+{% endif %}
+
+{% for item in input['questions_and_answers'] %}
+    <h2>Question {{ loop.index }}</h2>
+    <h2>{{ item[0] }}</h2>
+    {% if edit_permissions %}
+        <form method="post" action="{{ url_for('quiz.delete_question', quiz_name=input['quiz_name'],
+         question=[item[0]]) }}">
+            <input type="submit" name="delete" value="Delete Question">
+        </form>
+    {% endif %}
+    {% if edit_permissions or view_permissions %}
+        {% for answer in item[1] %}
+            <h2>{{ input['answer_letters'][loop.index - 1] }}: {{ answer }}</h2>
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+</div>
+{% endblock %}
